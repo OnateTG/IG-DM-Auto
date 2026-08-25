@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram DM Automation Pro - Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+    <div class="app-shell">
+        <header class="top-bar" role="banner">
+            <div class="top-bar-inner">
+                <div class="top-bar-brand">
+                    <svg class="logo-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+                        <rect width="32" height="32" rx="8" fill="currentColor"/>
+                        <path d="M8 12h16M8 16h12M8 20h8" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+                    </svg>
+                    <span class="logo-text">IG Auto</span>
+                </div>
+                
+                <nav class="top-bar-tabs" role="tablist" aria-label="Main navigation">
+                    <button class="tab-btn" id="campaign-tab" role="tab" aria-selected="true" data-tab="campaign">Campaign</button>
+                    <button class="tab-btn" id="leads-tab" role="tab" aria-selected="false" data-tab="leads">Leads</button>
+                    <button class="tab-btn" id="stats-tab" role="tab" aria-selected="false" data-tab="stats">Stats</button>
+                    <button class="tab-btn" id="settings-tab" role="tab" aria-selected="false" data-tab="settings">Settings</button>
+                    <button class="tab-btn" id="logs-tab" role="tab" aria-selected="false" data-tab="logs">Logs</button>
+                    <span class="tab-indicator" aria-hidden="true"></span>
+                </nav>
+                
+                <div class="top-bar-actions">
+                    <div class="action-buttons">
+                        <button class="btn btn-ghost btn-sm" id="refreshConnectionBtn" type="button" title="Refresh connection">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+                        </button>
+                        <div class="connection-status" id="connectionStatus" aria-live="polite">
+                            <span class="status-dot" id="statusDot" aria-hidden="true"></span>
+                            <span class="status-text" id="statusText">Checking connection...</span>
+                        </div>
+                        <button class="btn btn-ghost btn-sm" id="openInstagramBtn" type="button">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                            <span>Open IG</span>
+                        </button>
+                        <button class="btn btn-ghost btn-sm" id="verifyAccountBtn" type="button" style="display:none;">Verify</button>
+                        <button class="btn btn-ghost btn-sm btn-danger" id="switchAccountBtn" type="button" style="display:none;">Switch</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="account-info-bar" id="accountInfoBar" style="display:none;" aria-live="polite">
+                <div class="account-avatar" id="accountAvatar" aria-hidden="true"></div>
+                <div class="account-details">
+                    <span class="account-handle" id="accountHandle">@username</span>
+                    <span class="account-status" id="accountStatus">Connected • Ready</span>
+                </div>
+            </div>
+        </header>
+
+        <main class="main-content" role="main">
+            <section class="quick-stats" aria-label="Campaign overview" id="quickStatsSection">
+                <div class="stat-card">
+                    <div class="stat-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16"/><path d="M4 12h16"/><path d="M4 18h16"/><path d="M4 6v12"/><path d="M12 6v12"/><path d="M20 6v12"/></svg>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-value" id="statLeadsLoaded">0</span>
+                        <span class="stat-label">Leads Loaded</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-value" id="statFollowedToday">0</span>
+                        <span class="stat-label">Followed Today</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-value" id="statMessagedToday">0</span>
+                        <span class="stat-label">Messaged Today</span>
+                    </div>
+                </div>
+                <div class="stat-card stat-card-accent">
+                    <div class="stat-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-value" id="statSuccessRate">—</span>
+                        <span class="stat-label">Success Rate</span>
+                    </div>
+                </div>
+        </section>
+
+            <div class="tab-panels">
+                <section class="tab-panel active" id="campaign-panel" role="tabpanel" aria-labelledby="campaign-tab">
+                    <div class="campaign-grid">
+                        <div class="campaign-form-section">
+                            <form id="campaignForm" class="form-stack" novalidate>
+                                <div class="form-section">
+                                    <h2 class="section-title">Campaign Setup</h2>
+                                    
+                                    <div class="connection-banner" id="connectionBanner" hidden>
+                                        <svg class="banner-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                                        <div class="banner-content">
+                                            <strong>Connect to Instagram</strong>
+                                            <span>Open Instagram in a new tab, log in, then refresh the connection.</span>
+                                        </div>
+                                        <button class="btn btn-primary btn-sm" id="openInstagramBtn2" type="button">Open Instagram</button>
+                                    </div>
+
+                                    <div class="field-group">
+                                        <label class="field-label" for="campaignName">Campaign Name</label>
+                                        <div class="field-wrapper">
+                                            <input type="text" id="campaignName" class="field-input" placeholder=" " required aria-describedby="campaignNameHint">
+                                            <span class="field-placeholder">Enter a descriptive campaign name</span>
+                                        </div>
+                                        <span class="field-hint" id="campaignNameHint">Used internally to identify this campaign</span>
+                                    </div>
+
+                                    <div class="field-group">
+                                        <label class="field-label" for="messageTemplate">Message Template</label>
+                                        <div class="field-wrapper textarea-wrapper">
+                                            <textarea id="messageTemplate" class="field-input field-textarea" placeholder=" " rows="4" aria-describedby="templateHint"></textarea>
+                                            <span class="field-placeholder">Write your message… use {{firstName}}, {{username}}, etc.</span>
+                                        </div>
+                                        <div class="template-footer">
+                                            <span class="char-count" id="templateCharCount">0 characters</span>
+                                            <div class="placeholder-chips" id="placeholderChips" aria-label="Available placeholders"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-section">
+                                    <h2 class="section-title">Actions</h2>
+                                    <div class="toggle-group">
+                                        <label class="toggle-item">
+                                            <div class="toggle-info">
+                                                <strong>Enable Following</strong>
+                                                <span>Follow users before messaging</span>
+                                            </div>
+                                            <span class="toggle-switch">
+                                                <input type="checkbox" id="enableFollow" checked>
+                                                <span class="toggle-slider"></span>
+                                            </span>
+                                        </label>
+                                        <label class="toggle-item">
+                                            <div class="toggle-info">
+                                                <strong>Enable Messaging</strong>
+                                                <span>Send DMs to users</span>
+                                            </div>
+                                            <span class="toggle-switch">
+                                                <input type="checkbox" id="enableMessage" checked>
+                                                <span class="toggle-slider"></span>
+                                            </span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="form-section">
+                                    <h2 class="section-title">Daily Limits</h2>
+                                    <div class="field-row">
+                                        <div class="field-group">
+                                            <label class="field-label" for="dailyFollows">Follows / Day</label>
+                                            <div class="field-wrapper">
+                                                <input type="number" id="dailyFollows" class="field-input" value="50" min="1" max="100" placeholder=" ">
+                                                <span class="field-placeholder">50</span>
+                                            </div>
+                                        </div>
+                                        <div class="field-group">
+                                            <label class="field-label" for="dailyMessages">Messages / Day</label>
+                                            <div class="field-wrapper">
+                                                <input type="number" id="dailyMessages" class="field-input" value="80" min="1" max="150" placeholder=" ">
+                                                <span class="field-placeholder">80</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <p class="section-hint">Instagram soft limits: ~200 follows, ~100 DMs/day. Stay conservative.</p>
+                                </div>
+
+                                <div class="form-section collapsible" id="timingSection">
+                                    <button class="section-title collapsible-trigger" type="button" aria-expanded="false" aria-controls="timingContent">
+                                        Timing & Safety
+                                        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+                                    </button>
+                                    <div class="collapsible-content" id="timingContent" hidden>
+                                        <div class="field-row">
+                                            <div class="field-group">
+<label class="field-label" for="minDelayCampaign">Min Delay (sec)</label>
+                                                 <div class="field-wrapper">
+                                                     <input type="number" id="minDelayCampaign" class="field-input" value="30" min="10" max="300" placeholder=" ">
+                                                    <span class="field-placeholder">30</span>
+                                                </div>
+                                            </div>
+                                            <div class="field-group">
+<label class="field-label" for="maxDelayCampaign">Max Delay (sec)</label>
+                                                 <div class="field-wrapper">
+                                                     <input type="number" id="maxDelayCampaign" class="field-input" value="120" min="30" max="600" placeholder=" ">
+                                                    <span class="field-placeholder">120</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <label class="toggle-item">
+                                            <div class="toggle-info">
+<strong>Smart Delays</strong>
+                                                 <span>Human-like beta-distribution timing</span>
+                                             </div>
+                                             <span class="toggle-switch">
+                                                 <input type="checkbox" id="smartDelaysCampaign" checked>
+                                                <span class="toggle-slider"></span>
+                                            </span>
+                                        </label>
+                                        <label class="toggle-item">
+                                            <div class="toggle-info">
+<strong>Skip Private Accounts</strong>
+                                                 <span>Only target public profiles</span>
+                                             </div>
+                                             <span class="toggle-switch">
+                                                 <input type="checkbox" id="skipPrivateCampaign" checked>
+                                                <span class="toggle-slider"></span>
+                                            </span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="form-actions" style="display: flex; gap: var(--space-3); justify-content: flex-start; width: 100%; flex-wrap: wrap;">
+                                    <button type="submit" class="btn btn-primary btn-lg" id="startCampaignBtn" style="min-width: 160px; flex: 1 1 160px;">
+                                        <span class="btn-label" id="campaignButtonText">Start Campaign</span>
+                                        <span class="btn-loader" id="campaignLoader" aria-hidden="true">
+                                            <svg class="spinner" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10" stroke-opacity="0.25"/><path d="M12 2a10 10 0 0 1 10 10" stroke-linecap="round"/></svg>
+                                        </span>
+                                    </button>
+                                    <button type="button" class="btn btn-secondary btn-lg" id="pauseCampaignBtn" style="min-width: 120px; flex: 1 1 120px; display: none;">
+                                        <span class="btn-label" id="pauseButtonText">Pause</span>
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <aside class="preview-section" aria-label="DM Preview">
+                            <div class="preview-card">
+                                <div class="preview-header">
+                                    <h2 class="section-title">DM Preview</h2>
+                                    <span class="preview-char-count" id="previewCharCount">0 characters</span>
+                                </div>
+                                
+                                <div class="instagram-preview" id="messagePreviewSection">
+                                    <div class="ig-header">
+                                        <div class="ig-avatar" id="previewAvatar" aria-hidden="true"></div>
+                                        <div class="ig-contact">
+                                            <span class="ig-username" id="previewUsername">@username</span>
+                                            <span class="ig-name" id="previewName">Full Name</span>
+                                        </div>
+                                    </div>
+                                    <div class="ig-chat" id="previewChatArea">
+                                        <div class="ig-bubble sent" id="previewBubble">
+                                            <span class="bubble-text" id="previewMessageText">Enter a message template to see preview</span>
+                                        </div>
+                                        <div class="ig-seen" id="previewSeen">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+                                            <span>Seen</span>
+                                        </div>
+                                    </div>
+                                    <div class="ig-footer">
+                                        <span class="footer-char-count" id="previewFooterCharCount">0 characters</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="preview-warning" id="previewPlaceholderWarning" hidden>
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                                    <span>Some placeholders not replaced — leads missing data</span>
+                                </div>
+                                
+                                <div class="preview-empty" id="previewEmptyState" hidden>
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                                    <p>Upload leads and write a template to see a live preview</p>
+                                </div>
+                            </div>
+                        </aside>
+                    </div>
+                </section>
+
+                <section class="tab-panel" id="leads-panel" role="tabpanel" aria-labelledby="leads-tab" hidden>
+                    <div class="leads-layout">
+                        <div class="leads-upload-section">
+                            <h2 class="section-title">Lead Source</h2>
+                            
+                            <div class="upload-zone" id="uploadZone">
+                                <input type="file" id="leadsFile" accept=".csv,.txt" hidden>
+                                <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                                <p class="upload-title">Drop CSV or TXT file here</p>
+                                <p class="upload-subtitle">or click to browse</p>
+                                <div class="upload-formats">
+                                    <span class="format-badge">CSV</span> Any columns → all become <code>{{placeholders}}</code>
+                                    <span class="format-divider" aria-hidden="true">|</span>
+                                    <span class="format-badge">TXT</span> One username per line
+                                </div>
+                            </div>
+
+                            <div class="manual-entry">
+                                <label class="field-label" for="manualLeads">Or enter manually</label>
+                                <textarea id="manualLeads" class="field-input field-textarea" placeholder="username1&#10;@username2&#10;https://instagram.com/username3" rows="3"></textarea>
+                                <button class="btn btn-secondary btn-sm" id="processLeadsBtn" type="button">Process Leads</button>
+                            </div>
+                        </div>
+
+                        <div class="mapping-wizard" id="mappingWizard" hidden>
+                            <div class="wizard-progress" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="3" aria-label="Mapping progress">
+                                <div class="progress-step active" data-step="1"><span>1</span><label>Detect</label></div>
+                                <div class="progress-step" data-step="2"><span>2</span><label>Map</label></div>
+                                <div class="progress-step" data-step="3"><span>3</span><label>Review</label></div>
+                            </div>
+                            
+                            <div class="wizard-panels">
+                                <div class="wizard-panel active" data-step="1">
+                                    <h3>CSV Detected</h3>
+                                    <p class="wizard-meta" id="csvMeta">0 rows • 0 columns</p>
+                                    <div class="csv-preview" id="csvPreview"></div>
+                                    <div class="wizard-actions">
+                                        <button class="btn btn-secondary" type="button" data-wizard-back disabled>Back</button>
+                                        <button class="btn btn-primary" type="button" id="wizardNext1">Continue</button>
+                                    </div>
+                                </div>
+                                
+                                <div class="wizard-panel" data-step="2">
+                                    <h3>Map Instagram Column</h3>
+                                    <div class="field-group">
+                                        <label class="field-label" for="instagramColumnSelect">Instagram Handle Column <span class="required" aria-hidden="true">*</span></label>
+                                        <div class="field-wrapper">
+                                            <select id="instagramColumnSelect" class="field-input">
+                                                <option value="">Select the column with Instagram handles</option>
+                                            </select>
+                                            <span class="field-placeholder">Required</span>
+                                        </div>
+                                    </div>
+                                    <div class="field-group" id="messageColumnGroup" hidden>
+                                        <label class="field-label" for="messageColumnSelect">Custom Message Column (Optional)</label>
+                                        <div class="field-wrapper">
+                                            <select id="messageColumnSelect" class="field-input">
+                                                <option value="">Use global template for all leads</option>
+                                            </select>
+                                            <span class="field-placeholder">Optional</span>
+                                        </div>
+                                    </div>
+                                    <div class="wizard-actions">
+                                        <button class="btn btn-secondary" type="button" data-wizard-back>Back</button>
+                                        <button class="btn btn-primary" type="button" id="wizardNext2">Continue</button>
+                                    </div>
+                                </div>
+                                
+                                <div class="wizard-panel" data-step="3">
+                                    <h3>Available Placeholders</h3>
+                                    <p class="wizard-meta">Click any chip to copy <code>{{placeholder}}</code> to clipboard</p>
+                                    <div class="placeholder-grid" id="placeholderGrid"></div>
+                                    <div class="wizard-actions">
+                                        <button class="btn btn-secondary" type="button" data-wizard-back>Back</button>
+                                        <button class="btn btn-primary" type="button" id="wizardFinish">Load Leads</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="leads-queue-section">
+                            <div class="queue-header">
+                                <h2 class="section-title">Lead Queue <span class="queue-count" id="leadsCount">0</span></h2>
+                                <button class="btn btn-ghost btn-sm" id="clearLeadsBtn" type="button">Clear All</button>
+                            </div>
+                            <div class="leads-table-wrapper" style="max-height: 400px; overflow-y: auto;">
+                                <table class="leads-table" id="leadsTable" role="grid">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Username</th>
+                                            <th scope="col">Preview Data</th>
+                                            <th scope="col">Status</th>
+                                            <th scope="col"><span class="visually-hidden">Actions</span></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="leadsList">
+                                        <tr class="empty-state" id="emptyLeadsState">
+                                            <td colspan="5">
+                                                <div class="empty-content">
+                                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                                                    <p>No leads loaded</p>
+                                                    <span>Upload a CSV/TXT or enter usernames manually</span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="tab-panel" id="stats-panel" role="tabpanel" aria-labelledby="stats-tab" hidden>
+                    <div class="stats-layout">
+                        <div class="stats-header">
+                            <h2 class="section-title">Campaign Analytics</h2>
+                            <div class="date-range-picker">
+                                <button class="btn btn-ghost btn-sm active" data-range="today">Today</button>
+                                <button class="btn btn-ghost btn-sm" data-range="7d">7 Days</button>
+                                <button class="btn btn-ghost btn-sm" data-range="30d">30 Days</button>
+                                <button class="btn btn-ghost btn-sm" data-range="all">All Time</button>
+                            </div>
+                        </div>
+                        
+                        <div class="stats-grid-main">
+                            <div class="stat-hero">
+                                <div class="progress-ring-wrap">
+                                    <svg class="progress-ring" viewBox="0 0 120 120" aria-hidden="true">
+                                        <circle class="ring-bg" cx="60" cy="60" r="54" fill="none" stroke-width="8"/>
+                                        <circle class="ring-progress" id="progressRing" cx="60" cy="60" r="54" fill="none" stroke-width="8" stroke-linecap="round" transform="rotate(-90 60 60)"/>
+                                    </svg>
+                                    <div class="progress-center">
+                                        <span class="progress-percent" id="progressPercent">0%</span>
+                                        <span class="progress-fraction" id="progressFraction">0 of 0</span>
+                                    </div>
+                                </div>
+                                <div class="hero-meta">
+                                    <div class="meta-item">
+                                        <span class="meta-value" id="heroProcessed">0</span>
+                                        <span class="meta-label">Processed</span>
+                                    </div>
+                                    <div class="meta-item">
+                                        <span class="meta-value" id="heroRemaining">0</span>
+                                        <span class="meta-label">Remaining</span>
+                                    </div>
+                                    <div class="meta-item">
+                                        <span class="meta-value" id="heroTimeLeft">—</span>
+                                        <span class="meta-label">Est. Time Left</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="metric-cards">
+                                <article class="metric-card">
+                                    <div class="metric-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+                                    <div class="metric-content">
+                                        <span class="metric-value" id="metricFollowRate">—</span>
+                                        <span class="metric-label">Follow Success Rate</span>
+                                    </div>
+                                </article>
+                                <article class="metric-card">
+                                    <div class="metric-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+                                    <div class="metric-content">
+                                        <span class="metric-value" id="metricMessageRate">—</span>
+                                        <span class="metric-label">Message Success Rate</span>
+                                    </div>
+                                </article>
+                                <article class="metric-card">
+                                    <div class="metric-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+                                    <div class="metric-content">
+                                        <span class="metric-value" id="metricSkipped">0</span>
+                                        <span class="metric-label">Skipped</span>
+                                    </div>
+                                </article>
+                                <article class="metric-card">
+                                    <div class="metric-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
+                                    <div class="metric-content">
+                                        <span class="metric-value" id="metricRuntime">—</span>
+                                        <span class="metric-label">Runtime</span>
+                                    </div>
+                                </article>
+                            </div>
+                        </div>
+
+                        <div class="charts-section">
+                            <div class="chart-card">
+                                <h3>Activity Timeline</h3>
+                                <div class="chart-wrapper" id="activityChart" role="img" aria-label="Follows, messages, and errors over time"></div>
+                            </div>
+                            <div class="chart-card">
+                                <h3>Lead Funnel</h3>
+                                <div class="funnel-chart" id="funnelChart" role="img" aria-label="Lead conversion funnel"></div>
+                            </div>
+                        </div>
+
+                        <div class="stats-actions">
+                            <button class="btn btn-secondary" id="refreshStatsBtn" type="button">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+                                Refresh Stats
+                            </button>
+                            <button class="btn btn-primary" id="downloadReportBtn" type="button">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                                Download Report
+                            </button>
+                        </div>
+                        <div class="chart-card" id="detailedStatsContainer">
+                            <div id="detailedStatsContent"></div>
+                    </div>
+                </section>
+
+                <section class="tab-panel" id="settings-panel" role="tabpanel" aria-labelledby="settings-tab" hidden>
+                    <div class="settings-layout">
+                        <div class="settings-header">
+                            <h2 class="section-title">Settings</h2>
+                            <div class="settings-status" id="settingsStatus">
+                                <span class="status-indicator saved" aria-hidden="true"></span>
+                                <span class="status-text">All saved</span>
+                            </div>
+                        </div>
+
+                        <div class="settings-card">
+                            <header class="card-header">
+                                <div class="card-title-group">
+                                    <span class="card-icon" aria-hidden="true">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12l2 0M20 12l2 0"/></svg>
+                                    </span>
+                                    <div>
+                                        <h3 class="card-title">Timing & Behavior</h3>
+                                        <p class="card-subtitle">Control automation speed and safety patterns</p>
+                                    </div>
+                                </div>
+                                <button class="btn btn-ghost btn-sm" id="resetTimingBtn" type="button" title="Reset to defaults">Reset</button>
+                            </header>
+                            <div class="card-body">
+                                <div class="setting-row">
+                                    <div class="setting-inputs">
+                                        <div class="field-group">
+                                            <label class="field-label" for="minDelaySetting">Min Delay (seconds)</label>
+                                            <div class="field-wrapper stepper-wrapper">
+                                                <button class="stepper-btn" type="button" data-stepper="minDelaySetting" data-delta="-1" aria-label="Decrease">−</button>
+                                                <input type="number" id="minDelaySetting" class="field-input stepper-input" value="30" min="10" max="300" placeholder=" ">
+                                                <button class="stepper-btn" type="button" data-stepper="minDelaySetting" data-delta="1" aria-label="Increase">+</button>
+                                            </div>
+                                        </div>
+                                        <div class="field-group">
+                                            <label class="field-label" for="maxDelaySetting">Max Delay (seconds)</label>
+                                            <div class="field-wrapper stepper-wrapper">
+                                                <button class="stepper-btn" type="button" data-stepper="maxDelaySetting" data-delta="-1" aria-label="Decrease">−</button>
+                                                <input type="number" id="maxDelaySetting" class="field-input stepper-input" value="120" min="30" max="600" placeholder=" ">
+                                                <button class="stepper-btn" type="button" data-stepper="maxDelaySetting" data-delta="1" aria-label="Increase">+</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="setting-row">
+                                    <label class="toggle-item">
+                                        <div class="toggle-info">
+                                            <strong>Smart Delays</strong>
+                                            <span>Human-like beta-distribution timing patterns</span>
+                                        </div>
+                                        <span class="toggle-switch">
+                                            <input type="checkbox" id="smartDelaysSetting" checked>
+                                            <span class="toggle-slider"></span>
+                                        </span>
+                                    </label>
+                                </div>
+
+                                <div class="setting-row">
+                                    <label class="toggle-item">
+                                        <div class="toggle-info">
+                                            <strong>Skip Private Accounts</strong>
+                                            <span>Only target public profiles</span>
+                                        </div>
+                                        <span class="toggle-switch">
+                                            <input type="checkbox" id="skipPrivateSetting" checked>
+                                            <span class="toggle-slider"></span>
+                                        </span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="settings-card">
+                            <header class="card-header">
+                                <div class="card-title-group">
+                                    <span class="card-icon" aria-hidden="true">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                                    </span>
+                                    <div>
+                                        <h3 class="card-title">Daily Limits</h3>
+                                        <p class="card-subtitle">Maximum actions per 24-hour rolling window</p>
+                                    </div>
+                                </div>
+                                <button class="btn btn-ghost btn-sm" id="resetLimitsBtn" type="button" title="Reset to defaults">Reset</button>
+                            </header>
+                            <div class="card-body">
+                                <div class="setting-row">
+                                    <div class="setting-inputs">
+                                        <div class="field-group">
+                                            <label class="field-label" for="dailyFollowsSetting">Follows / Day</label>
+                                            <div class="field-wrapper stepper-wrapper">
+                                                <button class="stepper-btn" type="button" data-stepper="dailyFollowsSetting" data-delta="-1" aria-label="Decrease">−</button>
+                                                <input type="number" id="dailyFollowsSetting" class="field-input stepper-input" value="50" min="1" max="200" placeholder=" ">
+                                                <button class="stepper-btn" type="button" data-stepper="dailyFollowsSetting" data-delta="1" aria-label="Increase">+</button>
+                                            </div>
+                                            <div class="limit-hint" id="followsHint">
+                                                <span class="hint-current">50</span> / <span class="hint-max">200</span> <span class="hint-label">IG soft limit</span>
+                                                <div class="limit-bar"><div class="limit-fill" id="followsFill" style="width: 25%"></div></div>
+                                            </div>
+                                        </div>
+                                        <div class="field-group">
+                                            <label class="field-label" for="dailyMessagesSetting">Messages / Day</label>
+                                            <div class="field-wrapper stepper-wrapper">
+                                                <button class="stepper-btn" type="button" data-stepper="dailyMessagesSetting" data-delta="-1" aria-label="Decrease">−</button>
+                                                <input type="number" id="dailyMessagesSetting" class="field-input stepper-input" value="80" min="1" max="150" placeholder=" ">
+                                                <button class="stepper-btn" type="button" data-stepper="dailyMessagesSetting" data-delta="1" aria-label="Increase">+</button>
+                                            </div>
+                                            <div class="limit-hint" id="messagesHint">
+                                                <span class="hint-current">80</span> / <span class="hint-max">100</span> <span class="hint-label">IG soft limit</span>
+                                                <div class="limit-bar"><div class="limit-fill" id="messagesFill" style="width: 80%"></div></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p class="section-hint">Conservative defaults respect Instagram's unpublished limits.</p>
+                            </div>
+                        </div>
+
+                        <div class="settings-card">
+                            <header class="card-header">
+                                <div class="card-title-group">
+                                    <span class="card-icon" aria-hidden="true">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                                    </span>
+                                    <div>
+                                        <h3 class="card-title">Remote Self-Healing</h3>
+                                        <p class="card-subtitle">Auto-fix selectors when Instagram updates</p>
+                                    </div>
+                                </div>
+                                <span class="healing-status-inline" id="healingStatusInline">
+                                    <span class="status-indicator disconnected" aria-hidden="true"></span>
+                                    <span class="status-text">Not configured</span>
+                                </span>
+                            </header>
+                            <div class="card-body">
+                                <div class="setting-row">
+                                    <div class="field-group" style="flex:1;">
+                                        <label class="field-label" for="remoteHealingUrl">Web App URL</label>
+                                        <div class="field-wrapper">
+                                            <input type="url" id="remoteHealingUrl" class="field-input" placeholder="https://script.google.com/macros/s/...">
+                                            <span class="field-placeholder">Paste your deployed Web App URL</span>
+                                        </div>
+                                    </div>
+                                    <div class="setting-actions">
+                                        <button class="btn btn-secondary btn-sm" id="testHealingBtn" type="button">Test</button>
+                                        <button class="btn btn-ghost btn-sm" id="showHealingGuideBtn" type="button">Guide</button>
+                                    </div>
+                                </div>
+                                <div class="healing-status-detail" id="healingStatusDetail" hidden>
+                                    <div class="status-grid">
+                                        <div class="status-item">
+                                            <span class="status-label">Status</span>
+                                            <span class="status-value" id="healingState">Disconnected</span>
+                                        </div>
+                                        <div class="status-item">
+                                            <span class="status-label">Last Check</span>
+                                            <span class="status-value" id="healingLastCheck">—</span>
+                                        </div>
+                                        <div class="status-item">
+                                            <span class="status-label">Cached Selectors</span>
+                                            <span class="status-value" id="healingCached">0</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="settings-card danger-zone">
+                            <div class="card-body">
+                                <div class="danger-action">
+                                    <div class="danger-info">
+                                        <strong>Reset Extension</strong>
+                                        <span>Permanently delete all campaigns, leads, and settings. This cannot be undone.</span>
+                                    </div>
+                                    <div class="danger-confirm">
+                                        <label class="field-label" for="resetConfirm">Type <code>RESET</code> to confirm</label>
+                                        <div class="field-wrapper">
+                                            <input type="text" id="resetConfirm" class="field-input" placeholder="RESET" autocomplete="off">
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-danger" id="resetExtensionBtn" type="button" disabled>
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                                        Reset Extension
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="settings-save-bar">
+                            <div class="save-info">
+                                <span class="save-indicator" id="saveIndicator" hidden>
+                                    <span class="status-indicator pending" aria-hidden="true"></span>
+                                    <span>Saving…</span>
+                                </span>
+                                <span class="save-indicator success" id="saveSuccess" hidden>
+                                    <span class="status-indicator success" aria-hidden="true"></span>
+                                    <span>Saved</span>
+                                </span>
+                            </div>
+                            <button class="btn btn-primary btn-lg" id="saveSettingsBtn" type="button">Save All Settings</button>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="tab-panel" id="logs-panel" role="tabpanel" aria-labelledby="logs-tab" hidden>
+                    <div class="logs-layout">
+                        <div class="logs-header">
+                            <div class="logs-title-group">
+                                <h2 class="section-title">Live Debug Logs</h2>
+                                <span class="logs-count" id="logsCount">0 entries</span>
+                            </div>
+                            <div class="logs-toolbar">
+                                <div class="level-chips" id="levelChips" role="group" aria-label="Filter logs by level">
+                                    <button class="level-chip active" data-level="all" type="button">
+                                        <span class="chip-dot all" aria-hidden="true"></span> All
+                                    </button>
+                                    <button class="level-chip" data-level="error" type="button">
+                                        <span class="chip-dot error" aria-hidden="true"></span> Errors
+                                    </button>
+                                    <button class="level-chip" data-level="warning" type="button">
+                                        <span class="chip-dot warning" aria-hidden="true"></span> Warnings
+                                    </button>
+                                    <button class="level-chip" data-level="success" type="button">
+                                        <span class="chip-dot success" aria-hidden="true"></span> Success
+                                    </button>
+                                    <button class="level-chip" data-level="info" type="button">
+                                        <span class="chip-dot info" aria-hidden="true"></span> Info
+                                    </button>
+                                </div>
+                                <div class="source-filter">
+                                    <label class="field-label" for="sourceFilter">Source</label>
+                                    <select id="sourceFilter" class="field-input" style="width: auto; min-width: 160px;">
+                                        <option value="all">All Sources</option>
+                                        <option value="Extension">Extension</option>
+                                        <option value="Instagram Page">Instagram Page</option>
+                                    </select>
+                                </div>
+                                <div class="time-filter">
+                                    <label class="field-label" for="timeFilter">Time Range</label>
+                                    <select id="timeFilter" class="field-input" style="width: auto; min-width: 140px;">
+                                        <option value="1h">Last Hour</option>
+                                        <option value="6h">Last 6 Hours</option>
+                                        <option value="24h" selected>Last 24 Hours</option>
+                                        <option value="7d">Last 7 Days</option>
+                                        <option value="all">All Time</option>
+                                    </select>
+                                </div>
+                                <div class="logs-actions">
+                                    <label class="toggle-item toggle-compact">
+                                        <span class="toggle-info"><strong>Auto-scroll</strong></span>
+                                        <span class="toggle-switch">
+                                            <input type="checkbox" id="autoScrollLogs" checked>
+                                            <span class="toggle-slider"></span>
+                                        </span>
+                                    </label>
+                                    <button class="btn btn-ghost btn-sm" id="refreshLogsBtn" type="button" title="Refresh">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+                                    </button>
+                                    <button class="btn btn-ghost btn-sm" id="copyLogsBtn" type="button" title="Copy log">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                                    </button>
+                                    <button class="btn btn-ghost btn-sm btn-danger-text" id="clearLogsBtn" type="button" title="Clear">Clear</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="logs-summary" id="logsSummary" hidden>
+                            <div class="summary-grid">
+                                <div class="summary-card total">
+                                    <div class="summary-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 6h16"/><path d="M4 12h16"/><path d="M4 18h16"/><path d="M4 6v12"/><path d="M12 6v12"/><path d="M20 6v12"/></svg>
+                                    </div>
+                                    <div class="summary-content">
+                                        <span class="summary-value" id="summaryTotal">0</span>
+                                        <span class="summary-label">Total Entries</span>
+                                    </div>
+                                </div>
+                                <div class="summary-card error">
+                                    <div class="summary-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+                                    </div>
+                                    <div class="summary-content">
+                                        <span class="summary-value" id="summaryError">0</span>
+                                        <span class="summary-label">Errors</span>
+                                    </div>
+                                </div>
+                                <div class="summary-card warning">
+                                    <div class="summary-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                                    </div>
+                                    <div class="summary-content">
+                                        <span class="summary-value" id="summaryWarning">0</span>
+                                        <span class="summary-label">Warnings</span>
+                                    </div>
+                                </div>
+                                <div class="summary-card success">
+                                    <div class="summary-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+                                    </div>
+                                    <div class="summary-content">
+                                        <span class="summary-value" id="summarySuccess">0</span>
+                                        <span class="summary-label">Success</span>
+                                    </div>
+                                </div>
+                                <div class="summary-card info">
+                                    <div class="summary-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                                    </div>
+                                    <div class="summary-content">
+                                        <span class="summary-value" id="summaryInfo">0</span>
+                                        <span class="summary-label">Info</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="logs-container" id="logsContainer" role="log" aria-live="polite" aria-label="Debug logs" style="max-height: 500px; overflow-y: auto;">
+                            <div class="log-empty">Waiting for logs…</div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <dialog class="modal" id="healingModal" aria-modal="true" aria-labelledby="modalTitle">
+        <div class="modal-backdrop" tabindex="-1"></div>
+        <div class="modal-content">
+            <header class="modal-header">
+                <h2 id="modalTitle">Remote Self-Healing Setup</h2>
+                <button class="modal-close" id="closeModalBtn" aria-label="Close guide">&times;</button>
+            </header>
+            <div class="modal-body">
+                <ol class="setup-steps">
+                    <li class="step">
+                        <span class="step-number">1</span>
+                        <div class="step-content">
+                            <h3>Create Google Apps Script</h3>
+                            <p>Go to <a href="https://script.google.com/start" target="_blank" rel="noopener">script.google.com</a> → New Project.</p>
+                        </div>
+                    </li>
+                    <li class="step">
+                        <span class="step-number">2</span>
+                        <div class="step-content">
+                            <h3>Paste the Code</h3>
+                            <p>Replace everything in <code>Code.gs</code> with:</p>
+                            <div class="code-block">
+                                <button class="copy-code" id="copyCodeBtn" type="button" aria-label="Copy code">Copy</button>
+<pre><code>function doPost(e) {
+  try {
+    var requestData = JSON.parse(e.postData.contents);
+    var htmlSnippet = requestData.html;
+    if (!htmlSnippet) throw new Error("No HTML provided");
+
+    var aiResult = null;
+    for (var retry = 0; retry < 3; retry++) {
+      try {
+        aiResult = callOpenRouter(htmlSnippet);
+        if (aiResult && aiResult.selectors) break;
+      } catch (aiErr) {
+        if (aiErr.message && aiErr.message.indexOf("429") !== -1) {
+          Utilities.sleep((retry + 1) * 2000);
+        }
+        continue;
+      }
+    }
+
+    if (!aiResult || !aiResult.selectors) {
+      aiResult = heuristicParse(htmlSnippet);
+    }
+
+    if (!aiResult || !aiResult.selectors) {
+      aiResult = getCachedConfig();
+    }
+
+    if (aiResult && aiResult.selectors) {
+      cacheConfig(aiResult);
+    }
+
+    return ContentService.createTextOutput(JSON.stringify({
+      success: !!(aiResult && aiResult.selectors),
+      config: aiResult || {}
+    })).setMimeType(ContentService.MimeType.JSON);
+  } catch (err) {
+    return ContentService.createTextOutput(JSON.stringify({
+      success: false,
+      error: err.message
+    })).setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+function heuristicParse(html) {
+  try {
+    if (!html) return null;
+    var config = { selectors: {}, sendIconPath: null };
+    var inputMatch = html.match(/<[^>]*contenteditable[^>]*>.*?<\/[^>]*>/gi) || 
+                     html.match(/<[^>]*aria-placeholder\s*=\s*"Message[^"]*"/gi);
+    if (inputMatch && inputMatch.length > 0) {
+      config.selectors.messageInput = 'div[contenteditable="true"], div[role="textbox"]';
+    }
+    if (html.indexOf('M22.513') !== -1 || html.indexOf('paper plane') !== -1) {
+      config.sendIconPath = "M22.513 3.576C21.826 2.552";
+      config.selectors.sendButton = 'div[role="button"] svg path[d^="M22.513"]';
+    }
+    if (!config.selectors.sendButton) {
+      var btnMatch = html.match(/<[^>]*role\s*=\s*"button"[^>]*>.*?send.*?<\/[^>]*>/i) ||
+                     html.match(/<[^>]*role\s*=\s*"button"[^>]*>[^<]{0,10}<\/[^>]*>/gi);
+      if (btnMatch) config.selectors.sendButton = 'div[role="button"]';
+    }
+    if (config.selectors.messageInput || config.selectors.sendButton) return config;
+  } catch (e) {}
+  return null;
+}
+
+function cacheConfig(config) {
+  try {
+    var props = PropertiesService.getScriptProperties();
+    props.setProperty('LAST_WORKING_CONFIG', JSON.stringify(config));
+    props.setProperty('LAST_WORKING_CONFIG_TIMESTAMP', new Date().toISOString());
+  } catch (e) {}
+}
+function getCachedConfig() {
+  try {
+    var props = PropertiesService.getScriptProperties();
+    var cached = props.getProperty('LAST_WORKING_CONFIG');
+    return cached ? JSON.parse(cached) : null;
+  } catch (e) { return null; }
+}
+
+function callOpenRouter(html) {
+  var apiKey = PropertiesService.getScriptProperties().getProperty("OPENROUTER_API_KEY");
+  var url = "https://openrouter.ai/api/v1/chat/completions";
+  var models = [
+    "google/gemini-2.0-pro-exp-02-05:free",
+    "google/gemini-2.0-flash-thinking-exp:free",
+    "google/gemini-2.0-flash-exp:free",
+    "meta-llama/llama-3.3-70b-instruct:free"
+  ];
+  var systemPrompt = "You are a specialized DOM-to-Selector API. You only output valid JSON.";
+  var userPrompt = "Analyze this Instagram DM HTML snippet. Return JSON with selectors.messageInput, selectors.sendButton, and sendIconPath.";
+  var lastError = null;
+  for (var i = 0; i < models.length; i++) {
+    try {
+      var response = UrlFetchApp.fetch(url, {
+        method: "post", contentType: "application/json",
+        headers: { "Authorization": "Bearer " + apiKey },
+        payload: JSON.stringify({
+          model: models[i],
+          messages: [
+            { role: "system", content: systemPrompt },
+            { role: "user", content: userPrompt + "\n\n" + html.substring(0, 5000) }
+          ]
+        }), muteHttpExceptions: true
+      });
+      var data = JSON.parse(response.getContentText());
+      var content = data.choices[0].message.content;
+      content = content.replace(/```json/g, '').replace(/```/g, '').trim();
+      return JSON.parse(content);
+    } catch (e) { lastError = e; }
+  }
+  throw new Error("All AI models failed: " + lastError.message);
+}</code></pre>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="step">
+                        <span class="step-number">3</span>
+                        <div class="step-content">
+                            <h3>Add API Key</h3>
+                            <p>1. Get a free key from <a href="https://openrouter.ai/keys" target="_blank" rel="noopener">OpenRouter.ai</a>.</p>
+                            <p>2. In Apps Script: Project Settings (⚙️) → Script Properties → Add property.</p>
+                            <p>3. Property: <code>OPENROUTER_API_KEY</code> | Value: your key (<code>sk-or-…</code>).</p>
+                        </div>
+                    </li>
+                    <li class="step">
+                        <span class="step-number">4</span>
+                        <div class="step-content">
+                            <h3>Deploy as Web App</h3>
+                            <p>Deploy → New Deployment → Type: Web App → Execute as: Me → Who has access: Anyone → Deploy.</p>
+                            <p>Copy the Web App URL.</p>
+                        </div>
+                    </li>
+                    <li class="step">
+                        <span class="step-number">5</span>
+                        <div class="step-content">
+                            <h3>Finish</h3>
+                            <p>Paste the Web App URL in Settings → Remote Self-Healing → Save Settings.</p>
+                        </div>
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </dialog>
+
+    <div class="toast-container" id="toastContainer" aria-live="polite" aria-label="Notifications"></div>
+
+    <script src="papaparse.min.js"></script>
+    <script src="dashboard.js"></script>
+</body>
+</html>
